@@ -1,0 +1,100 @@
+<form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="form-container">
+  <mat-form-field appearance="fill">
+    <mat-label>Date de mission</mat-label>
+    <input
+      matInput
+      [matDatepicker]="eventPicker"
+      formControlName="eventDate"
+      [matDatepickerFilter]="dateFilter"
+    />
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="eventPicker"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #eventPicker></mat-datepicker>
+    <mat-error *ngIf="eventForm.get('eventDate')?.hasError('required')">
+      La date de mission est requise
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Thème de mission</mat-label>
+    <input matInput formControlName="theme" />
+    <mat-error *ngIf="eventForm.get('theme')?.hasError('required')">
+      Le thème de mission est requis
+    </mat-error>
+    <mat-error *ngIf="eventForm.get('theme')?.hasError('minlength')">
+      Le thème de mission doit comporter au moins 3 caractères
+    </mat-error>
+  </mat-form-field>
+  <mat-label>Période concernée par le spotcheck</mat-label>
+  <div formGroupName="period" class="period-group">
+    <mat-form-field appearance="fill">
+      <mat-label>Début Mois/Année</mat-label>
+      <input
+        matInput
+        [matDatepicker]="startPicker"
+        formControlName="startMonthYear"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="startPicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker
+        #startPicker
+        startView="year"
+        (monthSelected)="eventForm.get('period.startMonthYear')?.setValue($event)"
+      ></mat-datepicker>
+      <mat-error
+        *ngIf="eventForm.get('period.startMonthYear')?.hasError('required')"
+      >
+        Le début mois/année est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Fin Mois/Année</mat-label>
+      <input
+        matInput
+        [matDatepicker]="endPicker"
+        formControlName="endMonthYear"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="endPicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker
+        #endPicker
+        startView="year"
+        (monthSelected)="eventForm.get('period.endMonthYear')?.setValue($event)"
+      ></mat-datepicker>
+      <mat-error
+        *ngIf="eventForm.get('period.endMonthYear')?.hasError('required')"
+      >
+        La fin mois/année est requise
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Domaine de santé</mat-label>
+    <mat-select formControlName="field">
+      <mat-option value="">Sélectionner un domaine</mat-option>
+      <mat-option *ngFor="let field of fields" [value]="field"
+        >{{ field }}</mat-option
+      >
+    </mat-select>
+    <mat-error *ngIf="eventForm.get('field')?.hasError('required')">
+      Ce champ est requis
+    </mat-error>
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="eventForm.invalid"
+  >
+    Soumettre
+  </button>
+</form>
