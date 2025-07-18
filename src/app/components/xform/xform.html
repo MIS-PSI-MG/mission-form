@@ -1,0 +1,51 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Text Input</mat-label>
+    <input matInput formControlName="textInput" />
+    <mat-error *ngIf="myForm.get('textInput')?.hasError('required')">
+      Text input is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Start Date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="startPicker"
+      formControlName="startDate"
+      placeholder="Select start date"
+    />
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="startPicker"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #startPicker></mat-datepicker>
+    <mat-error *ngIf="myForm.get('startDate')?.hasError('required')">
+      Start date is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>End Date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="endPicker"
+      formControlName="endDate"
+      placeholder="Select end date"
+    />
+    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+    <mat-datepicker #endPicker></mat-datepicker>
+    <mat-error *ngIf="myForm.get('endDate')?.hasError('required')">
+      End date is required
+    </mat-error>
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="myForm.invalid"
+  >
+    Submit
+  </button>
+</form>
